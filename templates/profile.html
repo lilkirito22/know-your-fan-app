@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Perfil de {{ profile.name }}{% endblock %}
+
+{% block content %}
+  <h2>Perfil de {{ profile.name }}</h2>
+  <a href="{{ url_for('edit_profile') }}" class="btn btn-sm btn-outline-primary mb-3">Editar Perfil</a>
+
+  <table class="table">
+    <tbody>
+      <tr>
+        <th scope="row" style="width: 25%;">Nome:</th>
+        <td>{{ profile.name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Email:</th>
+        <td>{{ profile.email or 'Não informado' }}</td>
+      </tr>
+       <tr>
+        <th scope="row">Localização:</th>
+        <td>{{ profile.city or '?'}}{% if profile.state %} / {{ profile.state }}{% endif %}</td>
+      </tr>
+       <tr>
+        <th scope="row">Times Favoritos:</th>
+        <td>{{ profile.favorite_teams or 'Não informado' }}</td>
+      </tr>
+       <tr>
+        <th scope="row">Jogos Favoritos:</th>
+        <td>{{ profile.favorite_games or 'Não informado' }}</td>
+      </tr>
+       <tr>
+        <th scope="row">Interesses em E-sports:</th>
+        <td>{{ profile.esports_interests or 'Não informado' }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Atividades (Último Ano):</th>
+        <td>{{ profile.last_year_activities or 'Não informado' }}</td>
+      </tr>
+
+       <tr>
+          <th scope="row">Documento Placeholder:</th>
+          <td>
+              {% if profile.uploaded_doc_filename %}
+                  Arquivo enviado: <code>{{ profile.uploaded_doc_filename }}</code>
+                  {% else %}
+                  <i>Nenhum arquivo enviado.</i>
+              {% endif %}
+          </td>
+      </tr>
+      <tr>
+          <th scope="row">Validação "IA" (OCR Simulado):</th>
+          <td>
+              {% if profile.doc_ocr_result %}
+                  <pre style="max-height: 150px; overflow-y: auto; border: 1px solid #ccc; padding: 5px;"><code>{{ profile.doc_ocr_result }}</code></pre>
+              {% elif profile.uploaded_doc_filename %}
+                   <i>Aguardando ou falha no processamento OCR.</i>
+              {% else %}
+                  <i>N/A (Nenhum arquivo enviado).</i>
+              {% endif %}
+          </td>
+      </tr>
+      <tr>
+        <th scope="row">Perfil Criado em:</th>
+        <td>{{ profile.created_at.strftime('%d/%m/%Y %H:%M') if profile.created_at else '?' }} (UTC)</td>
+      </tr>
+      <tr>
+        <th scope="row">Última Atualização:</th>
+        <td>{{ profile.updated_at.strftime('%d/%m/%Y %H:%M') if profile.updated_at else '?' }} (UTC)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+  <h3>Próximos Passos</h3>
+  <p>Adicionar aqui seções para conectar redes sociais, links de e-sports, etc.</p>
+
+{% endblock %}

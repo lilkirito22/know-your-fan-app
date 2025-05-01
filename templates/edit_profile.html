@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Perfil{% endblock %}
+
+{% block content %}
+  <h2>Editar/Criar Perfil de Fã</h2>
+  <form method="POST" action="{{ url_for('edit_profile') }}" enctype="multipart/form-data">
+      {{ form.hidden_tag() }} <div class="mb-3">
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else "")) }}
+        {% if form.name.errors %}<div class="invalid-feedback">{% for error in form.name.errors %}{{ error }}{% endfor %}</div>{% endif %}
+      </div>
+
+      <div class="mb-3">
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+         {% if form.email.errors %}<div class="invalid-feedback">{% for error in form.email.errors %}{{ error }}{% endfor %}</div>{% endif %}
+      </div>
+
+      <div class="row mb-3">
+          <div class="col-md-8">
+             {{ form.city.label(class="form-label") }}
+             {{ form.city(class="form-control") }}
+          </div>
+           <div class="col-md-4">
+             {{ form.state.label(class="form-label") }}
+             {{ form.state(class="form-control") }}
+          </div>
+      </div>
+
+       <div class="mb-3">
+        {{ form.favorite_teams.label(class="form-label") }}
+        {{ form.favorite_teams(class="form-control") }}
+      </div>
+
+       <div class="mb-3">
+        {{ form.favorite_games.label(class="form-label") }}
+        {{ form.favorite_games(class="form-control") }}
+      </div>
+
+       <div class="mb-3">
+        {{ form.esports_interests.label(class="form-label") }}
+        {{ form.esports_interests(class="form-control", rows=3) }}
+      </div>
+
+       <div class="mb-3">
+        {{ form.last_year_activities.label(class="form-label") }}
+        {{ form.last_year_activities(class="form-control", rows=3) }}
+      </div>
+
+      <div class="mb-3">
+        {{ form.document.label(class="form-label") }}
+        {{ form.document(class="form-control" + (" is-invalid" if form.document.errors else "")) }}
+        {% if form.document.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.document.errors %}{{ error }}{% endfor %}
+            </div>
+        {% endif %}
+        <div class="form-text">Envie uma imagem (JPG/PNG) como placeholder. Não envie documentos reais!</div>
+      </div>
+      {{ form.submit(class="btn btn-primary") }}
+      <a href="{{ url_for('view_profile') }}" class="btn btn-secondary">Cancelar</a>
+  </form>
+{% endblock %}

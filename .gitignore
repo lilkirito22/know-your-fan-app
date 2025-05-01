@@ -1,1 +1,7 @@
 .env
+.venv/
+__pycache__/
+*.pyc
+instance/ # Pasta onde o DB ficará
+*.db      # Ignora qualquer arquivo .db
+uploads/
