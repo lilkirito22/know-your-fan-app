@@ -23,5 +23,6 @@ class ProfileForm(FlaskForm):
             FileAllowed(['jpg', 'png', 'jpeg'], 'Apenas imagens JPG ou PNG são permitidas!')
         ]
     )
+    esports_profile_links = TextAreaField('Links de Perfis E-sports (HLTV, Liquipedia, etc. - um por linha)')
 
     submit = SubmitField('Salvar Perfil')

@@ -15,6 +15,8 @@ class FanProfile(db.Model):
     favorite_games = db.Column(db.Text, nullable=True)
     esports_interests = db.Column(db.Text, nullable=True)
     last_year_activities = db.Column(db.Text, nullable=True)
+    esports_profile_links = db.Column(db.Text, nullable=True)
+    esports_links_validation = db.Column(db.Text, nullable=True)
 
     # <<< NOVAS COLUNAS ADICIONADAS >>>
     uploaded_doc_filename = db.Column(db.String(255), nullable=True) # Nome do arquivo placeholder salvo

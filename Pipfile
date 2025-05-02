@@ -4,13 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
 flask-sqlalchemy = "*"
 flask-wtf = "*"
 python-dotenv = "*"
 pillow = "*"
 pytesseract = "*"
 email-validator = "*"
+requests = "*"
+beautifulsoup4 = "*"
+httpx = "*"
+flask = {extras = ["async"], version = "*"}
 
 [dev-packages]
 
