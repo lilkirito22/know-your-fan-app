@@ -1,89 +1,95 @@
-{% extends 'base.html' %} {% block title %}Editar Perfil{% endblock %} {% block
-content %}
-<h2>Editar/Criar Perfil de Fã</h2>
-<form
-  method="POST"
-  action="{{ url_for('edit_profile') }}"
-  enctype="multipart/form-data"
->
-  {{ form.hidden_tag() }}
-  <div class="mb-3">
-    {{ form.name.label(class="form-label") }} {{ form.name(class="form-control"
-    + (" is-invalid" if form.name.errors else "")) }} {% if form.name.errors %}
-    <div class="invalid-feedback">
-      {% for error in form.name.errors %}{{ error }}{% endfor %}
-    </div>
-    {% endif %}
-  </div>
+{% extends 'base.html' %}
 
-  <div class="mb-3">
-    {{ form.email.label(class="form-label") }} {{
-    form.email(class="form-control" + (" is-invalid" if form.email.errors else
-    "")) }} {% if form.email.errors %}
-    <div class="invalid-feedback">
-      {% for error in form.email.errors %}{{ error }}{% endfor %}
-    </div>
-    {% endif %}
-  </div>
+{% block title %}Editar Perfil{% endblock %}
 
-  <div class="row mb-3">
-    <div class="col-md-8">
-      {{ form.city.label(class="form-label") }} {{
-      form.city(class="form-control") }}
-    </div>
-    <div class="col-md-4">
-      {{ form.state.label(class="form-label") }} {{
-      form.state(class="form-control") }}
-    </div>
-  </div>
+{% block content %}
+  <h2>Editar/Criar Perfil de Fã</h2>
+  <form method="POST" action="{{ url_for('edit_profile') }}" enctype="multipart/form-data">
+      {{ form.hidden_tag() }} {# --- Campos de Dados Pessoais --- #}
+      <div class="mb-3">
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else "")) }}
+        {% if form.name.errors %}<div class="invalid-feedback">{% for error in form.name.errors %}{{ error }}{% endfor %}</div>{% endif %}
+      </div>
+      <div class="mb-3">
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+         {% if form.email.errors %}<div class="invalid-feedback">{% for error in form.email.errors %}{{ error }}{% endfor %}</div>{% endif %}
+      </div>
+      <div class="row mb-3">
+          <div class="col-md-8">{{ form.city.label(class="form-label") }}{{ form.city(class="form-control") }}</div>
+          <div class="col-md-4">{{ form.state.label(class="form-label") }}{{ form.state(class="form-control") }}</div>
+      </div>
 
-  <div class="mb-3">
-    {{ form.favorite_teams.label(class="form-label") }} {{
-    form.favorite_teams(class="form-control") }}
-  </div>
+      {# --- Campos de Interesses --- #}
+       <div class="mb-3">
+        {{ form.favorite_teams.label(class="form-label") }}
+        {{ form.favorite_teams(class="form-control", placeholder="Ex: FURIA, Liquid, FaZe") }}
+      </div>
+       <div class="mb-3">
+        {{ form.favorite_games.label(class="form-label") }}
+        {{ form.favorite_games(class="form-control", placeholder="Ex: CSGO, CS2, Valorant") }}
+      </div>
+       <div class="mb-3">
+        {{ form.esports_interests.label(class="form-label") }}
+        {{ form.esports_interests(class="form-control", rows=3) }}
+      </div>
+       <div class="mb-3">
+        {{ form.last_year_activities.label(class="form-label") }}
+        {{ form.last_year_activities(class="form-control", rows=3) }}
+      </div>
 
-  <div class="mb-3">
-    {{ form.favorite_games.label(class="form-label") }} {{
-    form.favorite_games(class="form-control") }}
-  </div>
+      {# --- Campo de Upload (Passo 5) --- #}
+      <div class="mb-3">
+        {{ form.document.label(class="form-label") }}
+        {{ form.document(class="form-control" + (" is-invalid" if form.document.errors else "")) }}
+        {% if form.document.errors %}<div class="invalid-feedback">{% for error in form.document.errors %}{{ error }}{% endfor %}</div>{% endif %}
+        <div class="form-text">Envie uma imagem (JPG/PNG) como placeholder. Não envie docs reais!</div>
+      </div>
 
-  <div class="mb-3">
-    {{ form.esports_interests.label(class="form-label") }} {{
-    form.esports_interests(class="form-control", rows=3) }}
-  </div>
+      {# --- Campo de Links E-sports (Passo 6) --- #}
+      <div class="mb-3">
+        {{ form.esports_profile_links.label(class="form-label") }}
+        {{ form.esports_profile_links(class="form-control", rows=4, placeholder="https://www.hltv.org/player/123/nickname\nhttps://liquipedia.net/counterstrike/Player_Name") }}
+        {% if form.esports_profile_links.errors %}<div class="invalid-feedback">{% for error in form.esports_profile_links.errors %}{{ error }}{% endfor %}</div>{% endif %}
+         <div class="form-text">Cole os links para seus perfis, um em cada linha.</div>
+      </div>
 
-  <div class="mb-3">
-    {{ form.last_year_activities.label(class="form-label") }} {{
-    form.last_year_activities(class="form-control", rows=3) }}
-  </div>
+      {# --- Links Sociais (Passo 7 + Adições) --- #}
+      <hr>
+      <h5>Redes Sociais (Opcional)</h5>
+       <div class="mb-3">
+        {{ form.twitter_url.label(class="form-label") }}
+        {{ form.twitter_url(class="form-control" + (" is-invalid" if form.twitter_url.errors else ""), placeholder="https://twitter.com/seu_usuario") }}
+         {% if form.twitter_url.errors %}<div class="invalid-feedback">{% for error in form.twitter_url.errors %}{{ error }}{% endfor %}</div>{% endif %}
+      </div>
+       <div class="mb-3">
+        {{ form.twitch_url.label(class="form-label") }}
+        {{ form.twitch_url(class="form-control" + (" is-invalid" if form.twitch_url.errors else ""), placeholder="https://twitch.tv/seu_canal") }}
+         {% if form.twitch_url.errors %}<div class="invalid-feedback">{% for error in form.twitch_url.errors %}{{ error }}{% endfor %}</div>{% endif %}
+      </div>
+      {# <<< NOVOS CAMPOS ADICIONADOS AQUI >>> #}
+       <div class="mb-3">
+        {{ form.facebook_url.label(class="form-label") }}
+        {{ form.facebook_url(class="form-control" + (" is-invalid" if form.facebook_url.errors else ""), placeholder="https://facebook.com/seu.perfil") }}
+         {% if form.facebook_url.errors %}<div class="invalid-feedback">{% for error in form.facebook_url.errors %}{{ error }}{% endfor %}</div>{% endif %}
+      </div>
+       <div class="mb-3">
+        {{ form.instagram_url.label(class="form-label") }}
+        {{ form.instagram_url(class="form-control" + (" is-invalid" if form.instagram_url.errors else ""), placeholder="https://instagram.com/seu_usuario") }}
+         {% if form.instagram_url.errors %}<div class="invalid-feedback">{% for error in form.instagram_url.errors %}{{ error }}{% endfor %}</div>{% endif %}
+      </div>
+       <div class="mb-3">
+        {{ form.tiktok_url.label(class="form-label") }}
+        {{ form.tiktok_url(class="form-control" + (" is-invalid" if form.tiktok_url.errors else ""), placeholder="https://tiktok.com/@seu_usuario") }}
+         {% if form.tiktok_url.errors %}<div class="invalid-feedback">{% for error in form.tiktok_url.errors %}{{ error }}{% endfor %}</div>{% endif %}
+      </div>
+      {# --- FIM NOVOS CAMPOS SOCIAIS --- #}
 
-  <div class="mb-3">
-    {{ form.document.label(class="form-label") }} {{
-    form.document(class="form-control" + (" is-invalid" if form.document.errors
-    else "")) }} {% if form.document.errors %}
-    <div class="invalid-feedback">
-      {% for error in form.document.errors %}{{ error }}{% endfor %}
-    </div>
-    {% endif %}
-    <div class="form-text">
-      Envie uma imagem (JPG/PNG) como placeholder. Não envie documentos reais!
-    </div>
-  </div>
-  <div class="mb-3">
-    {{ form.esports_profile_links.label(class="form-label") }} {{
-    form.esports_profile_links(class="form-control", rows=4,
-    placeholder="https://www.hltv.org/player/123/nickname\nhttps://liquipedia.net/counterstrike/Player_Name")
-    }} {% if form.esports_profile_links.errors %}
-    <div class="invalid-feedback">
-      {% for error in form.esports_profile_links.errors %}{{ error }}{% endfor
-      %}
-    </div>
-    {% endif %}
-    <div class="form-text">
-      Cole os links para seus perfis, um em cada linha.
-    </div>
-  </div>
-  {{ form.submit(class="btn btn-primary") }}
-  <a href="{{ url_for('view_profile') }}" class="btn btn-secondary">Cancelar</a>
-</form>
+      {# Botão Submit #}
+      <div class="mt-4">
+          {{ form.submit(class="btn btn-primary") }}
+          <a href="{{ url_for('view_profile') }}" class="btn btn-secondary">Cancelar</a>
+      </div>
+  </form>
 {% endblock %}

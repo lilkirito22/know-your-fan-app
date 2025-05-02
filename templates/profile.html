@@ -4,119 +4,61 @@
 
 {% block content %}
   <h2>Perfil de {{ profile.name }}</h2>
-  {# Botão para ir para a página de edição #}
   <a href="{{ url_for('edit_profile') }}" class="btn btn-sm btn-outline-primary mb-3">Editar Perfil</a>
 
-  {# Tabela para exibir os dados do perfil #}
-  <table class="table table-bordered table-striped"> {# Adicionei classes Bootstrap para melhor visualização #}
+  <table class="table table-bordered table-striped">
     <tbody>
-      {# Linha para Nome #}
+      {# --- Dados Pessoais e Interesses --- #}
+      <tr><th scope="row" style="width: 25%;">Nome:</th><td>{{ profile.name }}</td></tr>
+      <tr><th scope="row">Email:</th><td>{{ profile.email or 'Não informado' }}</td></tr>
+      <tr><th scope="row">Localização:</th><td>{{ profile.city or '?'}}{% if profile.state %} / {{ profile.state }}{% endif %}</td></tr>
+      <tr><th scope="row">Times Favoritos:</th><td>{{ profile.favorite_teams or 'Não informado' }}</td></tr>
+      <tr><th scope="row">Jogos Favoritos:</th><td>{{ profile.favorite_games or 'Não informado' }}</td></tr>
+      <tr><th scope="row">Interesses em E-sports:</th><td><pre style="white-space: pre-wrap; word-wrap: break-word; margin: 0;">{{ profile.esports_interests or 'Não informado' }}</pre></td></tr>
+      <tr><th scope="row">Atividades (Último Ano):</th><td><pre style="white-space: pre-wrap; word-wrap: break-word; margin: 0;">{{ profile.last_year_activities or 'Não informado' }}</pre></td></tr>
+
+      {# --- Documento Placeholder e OCR --- #}
+      <tr><th scope="row">Documento Placeholder:</th><td>{% if profile.uploaded_doc_filename %}Arquivo enviado: <code>{{ profile.uploaded_doc_filename }}</code>{% else %}<i>Nenhum arquivo enviado.</i>{% endif %}</td></tr>
+      <tr><th scope="row">Validação "IA" (OCR Simulado):</th><td>{% if profile.doc_ocr_result %}<pre style="max-height: 150px; overflow-y: auto; border: 1px solid #eee; padding: 5px; background-color: #f8f9fa;"><code>{{ profile.doc_ocr_result }}</code></pre>{% elif profile.uploaded_doc_filename %}<i>Aguardando ou falha no processamento OCR.</i>{% else %}<i>N/A (Nenhum arquivo enviado).</i>{% endif %}</td></tr>
+
+      {# --- Links E-sports e Validação --- #}
+      <tr><th scope="row">Links de Perfis E-sports:</th><td>{% if profile.esports_profile_links %}<pre style="max-height: 150px; overflow-y: auto; border: 1px solid #eee; padding: 5px; background-color: #f8f9fa;"><code>{{ profile.esports_profile_links }}</code></pre>{% else %}<i>Nenhum link informado.</i>{% endif %}</td></tr>
+      <tr><th scope="row">Validação Links (Simulada):</th><td>{% if profile.esports_links_validation %}<pre style="max-height: 150px; overflow-y: auto; border: 1px solid #eee; padding: 5px; background-color: #f8f9fa;"><code>{{ profile.esports_links_validation }}</code></pre>{% else %}<i>Nenhuma validação realizada.</i>{% endif %}</td></tr>
+
+      {# --- Links Sociais e Análise Simulada (Passo 7 + Adições) --- #}
       <tr>
-        <th scope="row" style="width: 25%;">Nome:</th>
-        <td>{{ profile.name }}</td>
+        <th scope="row">Twitter:</th>
+        <td>{% if profile.twitter_url %}<a href="{{ profile.twitter_url }}" target="_blank">{{ profile.twitter_url }}</a>{% else %}<i>Não informado.</i>{% endif %}</td>
       </tr>
-      {# Linha para Email #}
-      <tr>
-        <th scope="row">Email:</th>
-        <td>{{ profile.email or 'Não informado' }}</td>
-      </tr>
-      {# Linha para Localização #}
        <tr>
-        <th scope="row">Localização:</th>
-        <td>{{ profile.city or '?'}}{% if profile.state %} / {{ profile.state }}{% endif %}</td> {# Mostra Cidade / Estado se ambos existirem #}
+        <th scope="row">Twitch:</th>
+        <td>{% if profile.twitch_url %}<a href="{{ profile.twitch_url }}" target="_blank">{{ profile.twitch_url }}</a>{% else %}<i>Não informado.</i>{% endif %}</td>
       </tr>
-      {# Linha para Times Favoritos #}
+      {# <<< NOVAS LINHAS ADICIONADAS AQUI >>> #}
+      <tr>
+        <th scope="row">Facebook:</th>
+        <td>{% if profile.facebook_url %}<a href="{{ profile.facebook_url }}" target="_blank">{{ profile.facebook_url }}</a>{% else %}<i>Não informado.</i>{% endif %}</td>
+      </tr>
+      <tr>
+        <th scope="row">Instagram:</th>
+        <td>{% if profile.instagram_url %}<a href="{{ profile.instagram_url }}" target="_blank">{{ profile.instagram_url }}</a>{% else %}<i>Não informado.</i>{% endif %}</td>
+      </tr>
        <tr>
-        <th scope="row">Times Favoritos:</th>
-        <td>{{ profile.favorite_teams or 'Não informado' }}</td>
+        <th scope="row">TikTok:</th>
+        <td>{% if profile.tiktok_url %}<a href="{{ profile.tiktok_url }}" target="_blank">{{ profile.tiktok_url }}</a>{% else %}<i>Não informado.</i>{% endif %}</td>
       </tr>
-      {# Linha para Jogos Favoritos #}
+      {# --- FIM NOVAS LINHAS SOCIAIS --- #}
        <tr>
-        <th scope="row">Jogos Favoritos:</th>
-        <td>{{ profile.favorite_games or 'Não informado' }}</td>
+        <th scope="row">Análise Social (Simulada):</th>
+        <td><i>Análise simulada: Atividade relevante para e-sports detectada nos perfis vinculados.</i></td>
       </tr>
-      {# Linha para Interesses Gerais #}
-       <tr>
-        <th scope="row">Interesses em E-sports:</th>
-         {# Usamos <pre> para manter quebras de linha do TextArea, se houver #}
-        <td><pre style="white-space: pre-wrap; word-wrap: break-word; margin: 0;">{{ profile.esports_interests or 'Não informado' }}</pre></td>
-      </tr>
-      {# Linha para Atividades #}
-      <tr>
-        <th scope="row">Atividades (Último Ano):</th>
-        <td><pre style="white-space: pre-wrap; word-wrap: break-word; margin: 0;">{{ profile.last_year_activities or 'Não informado' }}</pre></td>
-      </tr>
+      {# --- FIM SEÇÃO SOCIAL --- #}
 
-       {# Linhas para Documento Placeholder e OCR (do Passo 5) #}
-      <tr>
-          <th scope="row">Documento Placeholder:</th>
-          <td>
-              {% if profile.uploaded_doc_filename %}
-                  Arquivo enviado: <code>{{ profile.uploaded_doc_filename }}</code>
-                  {# Link para download precisaria de rota específica #}
-              {% else %}
-                  <i>Nenhum arquivo enviado.</i>
-              {% endif %}
-          </td>
-      </tr>
-      <tr>
-          <th scope="row">Validação "IA" (OCR Simulado):</th>
-          <td>
-              {% if profile.doc_ocr_result %}
-                  {# <pre> com scroll para resultados longos de OCR #}
-                  <pre style="max-height: 150px; overflow-y: auto; border: 1px solid #eee; padding: 5px; background-color: #f8f9fa;"><code>{{ profile.doc_ocr_result }}</code></pre>
-              {% elif profile.uploaded_doc_filename %}
-                   <i>Aguardando ou falha no processamento OCR.</i>
-              {% else %}
-                  <i>N/A (Nenhum arquivo enviado).</i>
-              {% endif %}
-          </td>
-      </tr>
-      {# Fim das linhas de Documento/OCR #}
+      {# --- Datas --- #}
+      <tr><th scope="row">Perfil Criado em:</th><td>{{ profile.created_at.strftime('%d/%m/%Y %H:%M') if profile.created_at else '?' }} (UTC)</td></tr>
+      <tr><th scope="row">Última Atualização:</th><td>{{ profile.updated_at.strftime('%d/%m/%Y %H:%M') if profile.updated_at else '?' }} (UTC)</td></tr>
 
-
-      {# <<< NOVAS LINHAS para Links E-sports e Validação (Passo 6.5) >>> #}
-      <tr>
-          <th scope="row">Links de Perfis E-sports:</th>
-          <td>
-              {% if profile.esports_profile_links %}
-                  {# <pre> para manter as quebras de linha dos links #}
-                  <pre style="max-height: 150px; overflow-y: auto; border: 1px solid #eee; padding: 5px; background-color: #f8f9fa;"><code>{{ profile.esports_profile_links }}</code></pre>
-              {% else %}
-                  <i>Nenhum link informado.</i>
-              {% endif %}
-          </td>
-      </tr>
-      <tr>
-          <th scope="row">Validação Links (Simulada):</th>
-           <td>
-              {% if profile.esports_links_validation %}
-                   {# <pre> para mostrar a lista formatada de resultados #}
-                   <pre style="max-height: 150px; overflow-y: auto; border: 1px solid #eee; padding: 5px; background-color: #f8f9fa;"><code>{{ profile.esports_links_validation }}</code></pre>
-              {% else %}
-                  <i>Nenhuma validação realizada (nenhum link válido?).</i>
-              {% endif %}
-           </td>
-      </tr>
-      {# <<< FIM NOVAS LINHAS >>> #}
-
-
-      {# Linhas para Datas de Criação/Atualização #}
-      <tr>
-        <th scope="row">Perfil Criado em:</th>
-        {# Formata a data/hora se existirem, senão mostra '?' #}
-        <td>{{ profile.created_at.strftime('%d/%m/%Y %H:%M') if profile.created_at else '?' }} (UTC)</td>
-      </tr>
-      <tr>
-        <th scope="row">Última Atualização:</th>
-        <td>{{ profile.updated_at.strftime('%d/%m/%Y %H:%M') if profile.updated_at else '?' }} (UTC)</td>
-      </tr>
     </tbody>
   </table>
-
-  <hr>
-  {# Seção de Próximos Passos (Placeholder) #}
-  <h3>Próximos Passos</h3>
-  <p>Adicionar aqui seção para conectar redes sociais.</p>
 
 {% endblock %}
